@@ -26,7 +26,7 @@ uv run mail-triage --text "商品有瑕疵，我想退貨。"
 uv run mail-triage --file examples/email.txt --output result.json
 ```
 
-執行後會輸出 `category`、`priority`、`summary`、`suggested_reply` 四個 JSON 欄位。`examples/sample-output.json` 是**示意結果**，不代表已經實際呼叫模型。
+執行後會輸出 `category`、`priority`、`summary`、`suggested_reply` 四個 JSON 欄位。`examples/sample-output.json` 是**示意結果**；本機實測觀察請參閱作品網站「執行結果」。
 
 ## 測試
 
@@ -34,7 +34,7 @@ uv run mail-triage --file examples/email.txt --output result.json
 uv run python -m unittest discover -s tests -v
 ```
 
-這些單元測試不需要模型啟動，只測試 JSON 欄位、欄位值、錯誤處理。交件前請額外人工測試 Ollama 真正推論並提供終端機截圖。
+這些單元測試不需要模型啟動，會測試 JSON 欄位、合法性、錯誤處理及模擬 Ollama HTTP 請求。已在 Windows 實際執行模型並發現分類誤判；調整後的實際推論尚待重新驗證。
 
 ## GitHub Pages（Actions 自動部署）
 
@@ -49,14 +49,16 @@ uv run python -m unittest discover -s tests -v
 
 - `docs/index.html`：做了什麼
 - `docs/run.html`：怎麼執行
-- `docs/results.html`：執行結果（目前是清楚標記的示意）
+- `docs/results.html`：本機實測轉錄、誤判分析與改進
 - `docs/ai.html`：AI 使用說明
 
 ## AI 使用紀錄
 
 - 使用 ChatGPT 協助產生此專案原始草稿、文字敘述、樣式與單元測試設計。
 - 運作中的 LLM：本機 Ollama 模型（預設 `llama3.2`）。
-- 自己修改或驗證了什麼：**請由交件者實際操作後補寫真實紀錄**，例如比較兩封來信、調整 prompt、修正分類問題，並附上證據。
+- 已實測：Windows PowerShell 使用 `uv sync` 成功安裝、Ollama `llama3.2` 成功推論，實測回傳 JSON 四欄；但物流詢問被誤判為退換貨。
+- 改進：補強分類邊界的提示詞、將 temperature 設為 0、補充模擬 API 與錯誤型別單元測試；模型改進後的真實準確率仍需後續測試。
+- 驗證來源：使用者提供的終端機截圖，以及 GitHub Actions 執行紀錄。
 - 注意：AI 生成的答案可能有誤，所有客服回覆都應人工核對。
 
 ## 安全與限制
