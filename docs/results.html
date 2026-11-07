@@ -1,7 +1,7 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>執行結果｜AI 客服信件分類器</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>✦ AI Mail Triage</strong><a href="index.html">作品介紹</a><a href="run.html">怎麼執行</a><a href="results.html" aria-current="page">執行結果</a><a href="ai.html">AI 使用說明</a></nav></header><main><div class="eyebrow">EXAMPLE OUTPUT</div><h1>執行結果</h1><div class="panel"><h2>範例輸入</h2><pre><code>您好，我上週訂購的商品到現在還沒有收到，
-網站顯示已出貨三天了，請幫我確認配送狀態，謝謝。</code></pre></div><div class="panel"><h2>預期 JSON 輸出格式</h2><pre><code>{
-  "category": "物流配送",
-  "priority": "中",
-  "summary": "客戶反映已出貨三天的訂單尚未送達，希望查詢配送狀態。",
-  "suggested_reply": "您好，感謝您的來信。很抱歉造成等候，我們可以協助查詢配送進度。請提供訂單編號，以便進一步確認，謝謝。"
-}</code></pre><p class="note">以上為手工撰寫的示意輸出，不是已實際執行 Ollama 的截圖或實測結果。正式交件前請在自己的電腦上執行，放入真實終端機截圖與觀察。</p></div><div class="panel"><h2>資料驗證</h2><p>程式會檢查分類值、優先度和必要欄位。若模型回傳無效 JSON、錯誤類別或空白內容，就提示錯誤而非把不合法資料當結果。</p></div></main><footer>AI Mail Triage · 課堂 Python LLM 專案</footer></body></html>
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>執行結果｜AI 客服信件分類器</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>✦ AI Mail Triage</strong><a href="index.html">作品介紹</a><a href="run.html">怎麼執行</a><a href="results.html" aria-current="page">執行結果</a><a href="ai.html">AI 使用說明</a></nav></header><main><div class="eyebrow">REAL LOCAL RUN · 2026-11-08</div><h1>執行結果與改進</h1><div class="panel"><h2>已完成的本機測試</h2><p>使用 Windows PowerShell、Python 3.12.16、uv、Ollama 0.40.15 與 llama3.2，執行：</p><pre><code>uv sync
+uv run mail-triage --file examples/email.txt</code></pre><p>程式確實回傳四欄 JSON，但第一次分類出現語義誤判：</p><pre><code>{
+  "category": "退換貨",
+  "priority": "高",
+  "summary": "請幫我確認配送狀態",
+  "suggested_reply": "我們會儘快回覆至您，謝謝您的了解。"
+}</code></pre><p class="note">以上文字來自使用者提供的 PowerShell 執行截圖之轉錄，並非本網站執行的 LLM；摘要與建議回覆保留了當時的實際措辭。</p></div><div class="panel"><h2>問題分析與修正</h2><p>原始信件主要是詢問包裹運送進度，正確的人工標註應為「物流配送」，不應被分類成「退換貨」。因此已調整分類提示詞，明確區分配送查詢與退貨請求；也將 temperature 設為 0，以降低非必要的輸出變動。</p><p class="note">調整後的模型準確率尚未進行多案例實測；temperature 0 不保證每次回覆完全一致。網站僅記錄已驗證事項，不宣稱已修正所有分類錯誤。</p></div><div class="panel"><h2>程式自動驗證</h2><p>GitHub Actions 執行不依賴 Ollama 的單元測試，涵蓋 JSON Schema 欄位、合法分類、缺失欄位、非法型別、空白信件、非本機 API 位址與模擬 API 呼叫。正式推論仍需在自己的電腦上執行。</p></div></main><footer>AI Mail Triage · 課堂 Python LLM 專案</footer></body></html>
