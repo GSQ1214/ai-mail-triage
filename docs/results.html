@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>執行結果｜AI 客服信件分類器</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>✦ AI Mail Triage</strong><a href="index.html">作品介紹</a><a href="run.html">怎麼執行</a><a href="results.html" aria-current="page">執行結果</a><a href="ai.html">AI 使用說明</a></nav></header><main><div class="eyebrow">EXAMPLE OUTPUT</div><h1>執行結果</h1><div class="panel"><h2>範例輸入</h2><pre><code>您好，我上週訂購的商品到現在還沒有收到，
+網站顯示已出貨三天了，請幫我確認配送狀態，謝謝。</code></pre></div><div class="panel"><h2>預期 JSON 輸出格式</h2><pre><code>{
+  "category": "物流配送",
+  "priority": "中",
+  "summary": "客戶反映已出貨三天的訂單尚未送達，希望查詢配送狀態。",
+  "suggested_reply": "您好，感謝您的來信。很抱歉造成等候，我們可以協助查詢配送進度。請提供訂單編號，以便進一步確認，謝謝。"
+}</code></pre><p class="note">以上為手工撰寫的示意輸出，不是已實際執行 Ollama 的截圖或實測結果。正式交件前請在自己的電腦上執行，放入真實終端機截圖與觀察。</p></div><div class="panel"><h2>資料驗證</h2><p>程式會檢查分類值、優先度和必要欄位。若模型回傳無效 JSON、錯誤類別或空白內容，就提示錯誤而非把不合法資料當結果。</p></div></main><footer>AI Mail Triage · 課堂 Python LLM 專案</footer></body></html>

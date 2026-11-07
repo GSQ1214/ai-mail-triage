@@ -1,0 +1,8 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>怎麼執行｜AI 客服信件分類器</title><link rel="stylesheet" href="assets/style.css"></head><body><header><nav><strong>✦ AI Mail Triage</strong><a href="index.html">作品介紹</a><a href="run.html" aria-current="page">怎麼執行</a><a href="results.html">執行結果</a><a href="ai.html">AI 使用說明</a></nav></header><main><div class="eyebrow">GET STARTED</div><h1>怎麼執行</h1><div class="panel"><h2>1. 準備環境</h2><p>安裝 Python（或讓 uv 自動管理）、<a href="https://docs.astral.sh/uv/">uv</a> 與 <a href="https://ollama.com/">Ollama</a>，下載模型。</p><pre><code>ollama pull llama3.2
+ollama serve</code></pre><p>如果 Ollama 已在背景執行，就不需要重複啟動 <code>ollama serve</code>。</p></div><div class="panel"><h2>2. 安裝專案</h2><p>在下載或 clone 的 GitHub 專案根目錄執行：</p><pre><code>uv sync</code></pre><p>可選：複製 <code>.env.example</code> 為 <code>.env</code> 修改本機模型名稱。</p></div><div class="panel"><h2>3. 分類客服信件</h2><pre><code>uv run mail-triage --file examples/email.txt
+
+# 直接輸入文字
+uv run mail-triage --text "我收到的商品有瑕疵，想申請退貨。"
+
+# 儲存結果
+uv run mail-triage --file examples/email.txt --output result.json</code></pre></div><div class="panel"><h2>4. 執行測試</h2><pre><code>uv run python -m unittest discover -s tests -v</code></pre><p>本地測試不需啟動 Ollama；實際 AI 推論仍需模型可用。</p></div></main><footer>AI Mail Triage · 課堂 Python LLM 專案</footer></body></html>
